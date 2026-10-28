@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Airline Insights - flight status analytics app
 
 Interactive dashboard over the Airline Dataset (98,619 passenger records, 2022).
@@ -32,3 +33,6 @@ No environment variables needed. `vercel.json` sets output directory `public` an
 - Dates like 06-10-2022 (38,961 rows) are ambiguous and read as day-first; M/D/YYYY dates are unambiguous.
 - Arrival Airport "0" is treated as missing.
 - Flight status is about one third each and unrelated to other fields, so the data looks synthetic.
+=======
+# AIRLINE-CASE-STUDY-
+>>>>>>> 82d407dd200940603a2717aaee28287fc193ceb5
