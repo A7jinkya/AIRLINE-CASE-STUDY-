@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Airline Insights – Flight Status Analytics</title>
+  <meta name="description" content="Interactive analytics dashboard for 98,619 airline passenger records (2022)." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">✈️ <span>Airline Insights</span></div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="dashboard" role="tab">Dashboard</button>
+      <button class="tab" data-tab="explorer" role="tab">Explorer</button>
+      <button class="tab" data-tab="passengers" role="tab">Passengers</button>
+      <button class="tab" data-tab="about" role="tab">About</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="loading" class="loading">Loading data…</div>
+    <div id="error" class="error" hidden></div>
+
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="panel" hidden>
+      <div class="filters card">
+        <label>Continent <select id="f-continent"></select></label>
+        <label>Gender <select id="f-gender"></select></label>
+        <label>Age group <select id="f-age"></select></label>
+        <label>Month <select id="f-month"></select></label>
+        <button id="f-reset" class="btn secondary">Reset</button>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="grid two">
+        <div class="card"><h3>Flight status</h3><div id="c-status"></div></div>
+        <div class="card"><h3>Status mix by continent</h3><div id="c-continent"></div></div>
+      </div>
+      <div class="grid two">
+        <div class="card"><h3>Monthly passengers &amp; disruption rate</h3><div id="c-month"></div></div>
+        <div class="card"><h3>Status mix by age group</h3><div id="c-age"></div></div>
+      </div>
+      <div class="grid two">
+        <div class="card"><h3>Daily volume (2022, all passengers)</h3><div id="c-daily"></div></div>
+        <div class="card"><h3>Age distribution (all passengers)</h3><div id="c-hist"></div></div>
+      </div>
+      <p class="note" id="insight"></p>
+    </section>
+
+    <!-- EXPLORER -->
+    <section id="tab-explorer" class="panel" hidden>
+      <div class="grid two">
+        <div class="card">
+          <div class="card-head"><h3>Departure countries</h3>
+            <input id="ex-country-q" type="search" placeholder="Search country…" /></div>
+          <div class="scroll"><table id="ex-country"></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Passenger nationalities</h3>
+            <input id="ex-nat-q" type="search" placeholder="Search nationality…" /></div>
+          <div class="scroll"><table id="ex-nat"></table></div>
+        </div>
+      </div>
+      <p class="note">Click a column header to sort. Disruption % = (Delayed + Cancelled) ÷ total.</p>
+    </section>
+
+    <!-- PASSENGERS -->
+    <section id="tab-passengers" class="panel" hidden>
+      <div class="filters card">
+        <label class="grow">Search <input id="p-q" type="search" placeholder="Name, passenger ID or pilot…" /></label>
+        <label>Status <select id="p-status"></select></label>
+        <label>Continent <select id="p-continent"></select></label>
+        <label>Gender <select id="p-gender"></select></label>
+        <label>Country <input id="p-country" type="search" placeholder="e.g. Japan" /></label>
+        <button id="p-reset" class="btn secondary">Reset</button>
+      </div>
+      <div class="card">
+        <div class="table-meta"><span id="p-count"></span>
+          <span class="pager"><button id="p-prev" class="btn secondary">‹ Prev</button>
+          <span id="p-page"></span><button id="p-next" class="btn secondary">Next ›</button></span></div>
+        <div class="scroll"><table id="p-table"></table></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="tab-about" class="panel" hidden>
+      <div class="card prose">
+        <h3>About this app</h3>
+        <p>An interactive dashboard over the <em>Airline Dataset Updated – v2</em>: <strong id="a-rows"></strong> passenger-flight records
+          from <strong id="a-dates"></strong>, covering <span id="a-ap"></span> departure airports in <span id="a-co"></span> countries.</p>
+        <h4>How it works</h4>
+        <ul>
+          <li>The dashboard filters a pre-aggregated data cube in your browser, so every chart updates instantly.</li>
+          <li>The Passengers tab calls a serverless endpoint, <code>/api/passengers</code>, to search and filter all records.</li>
+        </ul>
+        <h4>Read this before drawing conclusions</h4>
+        <ul>
+          <li>Flight status is almost exactly one-third On Time, Delayed and Cancelled, and shows no meaningful relationship with
+            continent, gender, age or month. The data appears to be synthetic, so differences between segments are random noise.</li>
+          <li>Departure dates arrive in two formats. Dates like <code>06-10-2022</code> are ambiguous and were read as day-first.</li>
+          <li>A value of <code>0</code> in Arrival Airport was treated as missing.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>Built with vanilla JS · no external dependencies · deployable on Vercel</footer>
+  <div id="tooltip" class="tooltip" hidden></div>
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

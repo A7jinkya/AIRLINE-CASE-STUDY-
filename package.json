@@ -1,0 +1,12 @@
+{
+  "name": "airline-insights",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Airline flight-status analytics dashboard (static front-end + Vercel serverless API)",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node scripts/dev-server.js",
+    "test": "node scripts/test.js"
+  },
+  "engines": { "node": ">=18" }
+}
